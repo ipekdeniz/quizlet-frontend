@@ -10,11 +10,11 @@ const CHART_OPTIONS = {
   tooltip: { theme: 'dark' },
 };
 
-export default function QuestionStatsChart({ stats }) {
+export default function QuestionStatsPieChart({ stats }) {
   const isEmpty = !stats || stats.total === 0;
 
   return (
-    <div className="card mt-4">
+    <div className="card">
       <div className="card-header">
         <h5 className="card-header-title">
           <i className="bi bi-pie-chart me-2" style={{ color: 'var(--kt-primary)' }} />
