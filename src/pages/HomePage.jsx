@@ -1,14 +1,17 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { api } from '../api';
+import QuestionStatsChart from '../components/QuestionStatsChart';
 
 export default function HomePage() {
   const [stats, setStats] = useState({ questions: 0, quizlets: 0 });
   const [loaded, setLoaded] = useState(false);
+  const [questionStats, setQuestionStats] = useState(null);
 
   useEffect(() => {
-    Promise.all([api.getQuestions(), api.getQuizlets()]).then(([qs, qls]) => {
+    Promise.all([api.getQuestions(), api.getQuizlets(), api.getQuestionStats()]).then(([qs, qls, typeStats]) => {
       setStats({ questions: qs.length, quizlets: qls.length });
+      setQuestionStats(typeStats?.error ? null : typeStats);
       setLoaded(true);
     });
   }, []);
@@ -106,23 +109,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Info Card */}
-        <div className="card mt-4">
-          <div className="card-body">
-            <div className="d-flex gap-3 align-items-start">
-              <div className="stat-icon" style={{ background: 'var(--kt-info-light)', color: 'var(--kt-info)', flexShrink: 0 }}>
-                <i className="bi bi-info-circle" />
-              </div>
-              <div>
-                <div style={{ fontWeight: 600, fontSize: 13, marginBottom: 4 }}>How It Works</div>
-                <div style={{ fontSize: 12, color: 'var(--kt-text-muted)', lineHeight: 1.6 }}>
-                  Go to <strong>Questions</strong> to create multiple choice, true/false, or written questions.
-                  Then head to <strong>Quizlets</strong> to build collections and assign questions to them.
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <QuestionStatsChart stats={questionStats} />
       </div>
     </>
   );

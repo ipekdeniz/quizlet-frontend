@@ -5,7 +5,7 @@ async function request(path, options = {}) {
     const res = await fetch(`${BASE}${path}`, options);
     if (res.status === 204) return null;
     const data = await res.json();
-    if (!res.ok) return { error: data?.error ?? `Request failed (${res.status})` };
+    if (res.status < 200 || res.status >= 300) return { error: data?.error ?? `Request failed (${res.status})` };
     return data;
   } catch {
     return { error: 'Network error. Please check your connection.' };
@@ -20,6 +20,7 @@ const json = (data) => ({
 export const api = {
   // Question pool
   getQuestions: () => request('/questions'),
+  getQuestionStats: () => request('/questions/stats'),
   createQuestion: (data) => request('/questions', { method: 'POST', ...json(data) }),
   deleteQuestion: (id) => request(`/questions/${id}`, { method: 'DELETE' }),
 

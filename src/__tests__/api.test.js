@@ -51,6 +51,21 @@ describe('createQuestion', () => {
   });
 });
 
+describe('getQuestionStats', () => {
+  it('sends GET to /api/questions/stats and returns parsed JSON', async () => {
+    const data = { multiple_choice: 2, true_false: 1, written: 3, total: 6 };
+    global.fetch.mockResolvedValue({
+      status: 200,
+      json: vi.fn().mockResolvedValue(data),
+    });
+
+    const result = await api.getQuestionStats();
+
+    expect(fetch).toHaveBeenCalledWith('/api/questions/stats', {});
+    expect(result).toEqual(data);
+  });
+});
+
 describe('deleteQuestion', () => {
   it('sends DELETE to /api/questions/:id and returns null', async () => {
     global.fetch.mockResolvedValue({ status: 204 });
