@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { api } from '../api';
-import QuestionStatsChart from '../components/QuestionStatsChart';
+import QuestionStatsPieChart from '../components/QuestionStatsPieChart';
+import QuestionStatsBarChart from '../components/QuestionStatsBarChart';
 
 export default function HomePage() {
   const [stats, setStats] = useState({ questions: 0, quizlets: 0 });
@@ -109,7 +110,14 @@ export default function HomePage() {
           </div>
         </div>
 
-        <QuestionStatsChart stats={questionStats} />
+        <div className="row g-4 mt-4">
+          <div className="col-12 col-lg-6">
+            <QuestionStatsPieChart stats={questionStats} />
+          </div>
+          <div className="col-12 col-lg-6">
+            <QuestionStatsBarChart stats={questionStats} />
+          </div>
+        </div>
       </div>
     </>
   );
